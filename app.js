@@ -144,7 +144,7 @@ function start(){
         if(snake.dead()){
             swal({
                 title: "Opp! You eat your tail!",
-                text:`Your score ${this.total}`,
+                text:`Your score ${snake.total}`,
                 icon: "error",
                 dangerMode: true,
             })
