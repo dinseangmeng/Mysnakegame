@@ -59,13 +59,17 @@ function Snake(){
     }
     this.outBoard=function(x,y){
         if(x>canvas.width || x<0||y>canvas.height ||y<0){
-            swal({
+            this.bol=false;
+            Swal.fire({
                 title: `${this.check(this.total)}`,
+                width:600,
+                padding:"1rem",
                 text:`Your score ${this.total}`,
-                icon: "error",
-                dangerMode: true,
-                
-            })
+                icon: "error" ,
+                imageUrl:"https://cdn.dribbble.com/users/375867/screenshots/3136248/media/6e3aff4123c55b4df6c1c711292482fc.gif",
+                imageWidth: 250,
+                imageHeight: 200,
+            });
             this.total=0;
             this.tail=[];
             this.x=0;
@@ -73,7 +77,7 @@ function Snake(){
             this.vSpeed=0;
             this.hSpeed=0;
             musicOV.play();
-            disable();
+            
         }
         
     }
@@ -127,14 +131,17 @@ function Snake(){
         }
         
     }
+    this.bol=true;
+    
 };
 function start(){
-    document.querySelector(".reloadp").style.display="block";
-    document.querySelector(".speedsetting").style.display="none";
     musicBG.play();
     snake=new Snake;
     snack=new Snack;
     snack.foodPath();
+    
+    document.querySelector(".reloadp").style.display="block";
+    document.querySelector(".speedsetting").style.display="none";
     
     window.setInterval(()=>{
         context.clearRect(0, 0, canvas.width, canvas.height);
@@ -142,11 +149,15 @@ function start(){
         snake.move();
         snake.paint();
         if(snake.dead()){
-            swal({
+            Swal.fire({
                 title: "Opp! You eat your tail!",
+                width:500,
+                padding:"1rem",
                 text:`Your score ${snake.total}`,
                 icon: "error",
-                dangerMode: true,
+                imageUrl:"https://cdn.dribbble.com/users/375867/screenshots/3136248/media/6e3aff4123c55b4df6c1c711292482fc.gif",
+                imageWidth: 250,
+                imageHeight: 200,
             })
             snake.total=0;
             snake.tail=[];
@@ -154,16 +165,21 @@ function start(){
             snake.y=0;
             snake.vSpeed=0;
             snake.hSpeed=0;
+            snake.bol=false;
             musicMV.play();
             
+            
         };
+        
+        
+        
         if(snake.ate(snack)){
             musicEat.play();
             snack.foodPath();
         };
         document.querySelector(".Score").innerText=snake.total;
     },document.querySelector("#speed").valueAsNumber);
-    document.addEventListener("keydown",(e)=>{
+    document.body.addEventListener("keydown",(e)=>{
         lastKey=direct? direct:"";
         direct=e.key.replace("Arrow","");
         snake.moveDirect(direct,lastKey);
