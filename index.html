@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+    
+</head>
+<body >
+    <div id="Game" style="display:flex; align-items:center; justify-content:center">
+    <canvas class="canvas" width="900" height="600" style="background-color:rgb(104, 75, 75) ;" ></canvas>
+
+    <div style="height: 50%;width:20vw; background-color:burlywood;text-align: center; margin-left: 3rem; border-radius: 1rem;">
+        <h1 style="text-align:center;">Meng's Eating Game</h1>
+        <h1 class="Score">0</h1>
+        <div class="speedsetting">
+            <input type="range"id="speed"name="speed" min=25 max=300 ;><label for="speed" class="speedlabel">speed</label>
+            <div style="display:flex; justify-content:center;align-items: center; flex-direction: column;">
+                    
+                <button onclick="start()" class="btn btn-primary">start</button>
+                
+            </div>
+        </div>
+        <p class="reloadp" style="font-size:small; margin-top: 2rem;">If you want to change speed setting you need <a href="/Mysnakegame">reloadpage</a></p>
+    </div>
+ 
+</div>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script src="app.js" ></script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+
+}
+#Game ,body{
+    width: 100vw;
+    height: 100vh;
+    overflow: auto;
+}
+.gameover{
+    display: none;
+}
+.Hide{
+    display: block;
+}
+.gamestart{
+    display: block;
+}
+.reloadp{
+    display: none;
+}
