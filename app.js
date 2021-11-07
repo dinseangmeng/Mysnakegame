@@ -42,7 +42,7 @@ function Snake(){
         for(let i=0;i<this.tail.length;i++){
             context.fillRect(this.tail[i].x,this.tail[i].y,scale,scale);
         }
-        context.fillStyle="#F3B1E5";
+        context.fillStyle="#0b4e00";
         context.fillRect(this.x,this.y,scale,scale);
     }
     this.move=function(){
@@ -55,7 +55,7 @@ function Snake(){
         this.y+=this.hSpeed;
         this.outBoard(this.x,this.y);
         
-    
+        
     }
     this.outBoard=function(x,y){
         if(x>canvas.width || x<0||y>canvas.height ||y<0){
@@ -65,7 +65,7 @@ function Snake(){
                 icon: "error",
                 dangerMode: true,
                 
-              })
+            })
             this.total=0;
             this.tail=[];
             this.x=0;
@@ -73,8 +73,9 @@ function Snake(){
             this.vSpeed=0;
             this.hSpeed=0;
             musicOV.play();
+            disable();
         }
-
+        
     }
     this.check=function(total){
         if(total<10){
@@ -146,7 +147,7 @@ function start(){
                 text:`Your score ${this.total}`,
                 icon: "error",
                 dangerMode: true,
-              })
+            })
             snake.total=0;
             snake.tail=[];
             snake.x=0;
@@ -154,7 +155,7 @@ function start(){
             snake.vSpeed=0;
             snake.hSpeed=0;
             musicMV.play();
-          
+            
         };
         if(snake.ate(snack)){
             musicEat.play();
@@ -165,7 +166,6 @@ function start(){
     document.addEventListener("keydown",(e)=>{
         lastKey=direct? direct:"";
         direct=e.key.replace("Arrow","");
-        console.log(direct)
         snake.moveDirect(direct,lastKey);
         
     })
