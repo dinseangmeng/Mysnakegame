@@ -192,8 +192,6 @@ if(window.innerWidth>1250 && window.innerHeight>630){
 }else {
         Swal.fire({
             title: "Your Screen too small to play !",
-            width:500,
-            padding:"1rem",
             text:"This Game Just creat for Computer online",
             icon: "error",
             imageUrl:"https://cdn.dribbble.com/users/375867/screenshots/3136248/media/6e3aff4123c55b4df6c1c711292482fc.gif",
