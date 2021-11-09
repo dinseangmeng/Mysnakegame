@@ -16,13 +16,18 @@ var musicEat=new Audio('music/food.mp3');
 if(window.innerWidth>=600 && window.innerHeight>=400){
     function size() {
         if(document.documentElement.clientHeight>630 && document.documentElement.clientWidth>1250 ){
+            document.querySelector("#dashboard").style.display="block";
             canvas.width=900;
             canvas.height=600;
         }
         else if((document.documentElement.clientHeight>400 &&document.documentElement.clientHeight<630) || (document.documentElement.clientWidth>=600&&document.documentElement.clientWidth<900) ){
+            document.querySelector("#dashboard").style.display="block";
             canvas.height=390;
             canvas.width=600;
         }else if(document.documentElement.clientHeight<400 || document.documentElement.clientWidth<600 ){
+            document.querySelector("#dashboard").style.display="none";
+            canvas.width=document.documentElement.clientWidth*0.7;
+            canvas.height=document.documentElement.clientHeight*0.7;
             Swal.fire({
                 title: "Your Screen too small to play !",
                 text:"This Game Just creat for Computer online",
