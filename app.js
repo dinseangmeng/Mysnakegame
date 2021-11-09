@@ -2,9 +2,9 @@
 
 const canvas = document.querySelector('.canvas');
 const context=canvas.getContext('2d');
-const scale=30;
-const rows=canvas.width/scale;
-const column=canvas.height/scale;
+var scale=30;
+var rows=canvas.width/scale
+var column=canvas.height/scale;
 var snake;
 var snack;
 var lastKey,direct;
@@ -12,10 +12,37 @@ var musicBG=new Audio('music/music.mp3');
 var musicMV=new Audio('music/move.mp3');
 var musicOV=new Audio('music/gameover.mp3');
 var musicEat=new Audio('music/food.mp3');
-if(window.innerWidth>1250 && window.innerHeight>630){
+
+if(window.innerWidth>=600 && window.innerHeight>=400){
+    function size() {
+        if(document.documentElement.clientHeight>630 && document.documentElement.clientWidth>1250 ){
+            canvas.width=900;
+            canvas.height=600;
+        }
+        else if((document.documentElement.clientHeight>400 &&document.documentElement.clientHeight<630) || (document.documentElement.clientWidth>=600&&document.documentElement.clientWidth<900) ){
+            canvas.height=390;
+            canvas.width=600;
+        }else if(document.documentElement.clientHeight<400 || document.documentElement.clientWidth<600 ){
+            Swal.fire({
+                title: "Your Screen too small to play !",
+                text:"This Game Just creat for Computer online",
+                icon: "error",
+                imageUrl:"https://cdn.dribbble.com/users/375867/screenshots/3136248/media/6e3aff4123c55b4df6c1c711292482fc.gif",
+                imageWidth: 250,
+                imageHeight: 200,
+                
+            }).then(()=>{
+                window.history.go(-1);
+            })
+        }
+    
+        
+      
+    };
+    window.addEventListener("resize",size);
     function label(){
         document.querySelector(".speedlabel").innerText=document.querySelector("#speed").value;
-    }
+    };
     setInterval(label,50);
     
     function Snack(){
