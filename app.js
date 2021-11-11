@@ -12,6 +12,7 @@ var musicBG=new Audio('music/music.mp3');
 var musicMV=new Audio('music/move.mp3');
 var musicOV=new Audio('music/gameover.mp3');
 var musicEat=new Audio('music/food.mp3');
+var a
 
 if(window.innerWidth>=600 && window.innerHeight>=400){
     function size() {
@@ -40,9 +41,9 @@ if(window.innerWidth>=600 && window.innerHeight>=400){
                 window.history.go(-1);
             })
         }
-    
         
-      
+        
+        
     };
     window.addEventListener("resize",size);
     function label(){
@@ -104,6 +105,17 @@ if(window.innerWidth>=600 && window.innerHeight>=400){
                     imageWidth: 250,
                     imageHeight: 200,
                 });
+                if(this.total<10){
+                    document.querySelector(".reloadp").style.display="block"
+                    document.querySelector(".reloadp").innerText="Opp ! Your Score TOO low you Should Change Speed for First try";
+                }else if(this.total>20){
+                    document.querySelector(".reloadp").style.display="block"
+                    document.querySelector(".reloadp").innerText="Wow ! Your try more hard speed";
+                }
+                else{
+                    document.querySelector(".reloadp").style.display="block"
+                    document.querySelector(".reloadp").innerText="Not Bad! on first try";
+                }
                 this.total=0;
                 this.tail=[];
                 this.x=0;
@@ -111,6 +123,8 @@ if(window.innerWidth>=600 && window.innerHeight>=400){
                 this.vSpeed=0;
                 this.hSpeed=0;
                 musicOV.play();
+                document.querySelector(".speedsetting").style.display="block";
+                document.querySelector("button").innerText="Try again"
                 
             }
             
@@ -169,15 +183,17 @@ if(window.innerWidth>=600 && window.innerHeight>=400){
         
     };
     function start(){
+        clearInterval(a);
         musicBG.play();
         snake=new Snake;
         snack=new Snack;
         snack.foodPath();
         
-        document.querySelector(".reloadp").style.display="block";
+        document.querySelector(".reloadp").style.display="none";
         document.querySelector(".speedsetting").style.display="none";
         
-        window.setInterval(()=>{
+        
+        a=setInterval(()=>{
             context.clearRect(0, 0, canvas.width, canvas.height);
             snack.paint();
             snake.move();
@@ -202,6 +218,10 @@ if(window.innerWidth>=600 && window.innerHeight>=400){
                 snake.bol=false;
                 musicMV.play();
                 
+                document.querySelector(".speedsetting").style.display="block";
+                document.querySelector("button").innerText="Try again"
+
+                
                 
             };
             
@@ -220,18 +240,18 @@ if(window.innerWidth>=600 && window.innerHeight>=400){
             
         })
     };
- 
+    
 }else {
-        Swal.fire({
-            title: "Your Screen too small to play !",
-            text:"This Game Just creat for Computer online",
-            icon: "error",
-            imageUrl:"https://cdn.dribbble.com/users/375867/screenshots/3136248/media/6e3aff4123c55b4df6c1c711292482fc.gif",
-            imageWidth: 250,
-            imageHeight: 200,
-            
-        }).then(()=>{
-            window.history.go(-1);
-        })
+    Swal.fire({
+        title: "Your Screen too small to play !",
+        text:"This Game Just creat for Computer online",
+        icon: "error",
+        imageUrl:"https://cdn.dribbble.com/users/375867/screenshots/3136248/media/6e3aff4123c55b4df6c1c711292482fc.gif",
+        imageWidth: 250,
+        imageHeight: 200,
+        
+    }).then(()=>{
+        window.history.go(-1);
+    })
 }
 
