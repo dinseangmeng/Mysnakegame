@@ -1,7 +1,7 @@
 //Variable
 const canvas = document.querySelector('.canvas');
 const context=canvas.getContext('2d');
-var scale=30;
+var scale=30,scale1;
 var rows
 var column
 var snake;
@@ -11,14 +11,37 @@ var musicBG=new Audio('music/music.mp3');
 var musicMV=new Audio('music/move.mp3');
 var musicOV=new Audio('music/gameover.mp3');
 var musicEat=new Audio('music/food.mp3');
-var a
+var a,Speed,j=0;
+var score=new Array;
 var speedLabel=document.getElementById("speed");
+var HisBoard=document.querySelector("#Scorehistory");
+var str=new String;
 function label(){
-    document.querySelector(".speedlabel").innerText=speedLabel.value;
+    if(document.querySelector("#scale").valueAsNumber%2!=0){
+        document.querySelector("#scale").value=document.querySelector("#scale").valueAsNumber-1;
+        scale1=document.querySelector("#scale").valueAsNumber;
+        
+    }
+    if(speedLabel.valueAsNumber%5!=0){
+        Speed=speedLabel.valueAsNumber;
+        while(true){
+            if(Speed%5==0){
+                break
+            }
+            Speed++;
+        }
+        document.querySelector(".speedlabel").innerText=Speed;
+        speedLabel.value=Speed;
+        speedLabel.valueAsNumber=Speed;
+    }
+    document.querySelector(".scaleLabel").innerText=scale ? scale:"Scale";
+    if(scale1!==scale){
+        scale=scale1;
+    }
+    
 
 };
-setInterval(label,50);
-if(window.innerWidth>=600){
+function side(){
     for(let i=Math.floor(document.documentElement.clientWidth/1.5);i>600;i--){
         if(i%scale===0){
             canvas.width=i;
@@ -62,6 +85,10 @@ if(window.innerWidth>=600){
         
         
     });
+}
+setInterval(label,150)
+if(window.innerWidth>=600){
+    side();
     rows=canvas.width/scale;
     column=canvas.height/scale;
     function Snack(){
@@ -72,7 +99,7 @@ if(window.innerWidth>=600){
             while(true){
                 this.x=(Math.floor(Math.random()*rows-1)+1)*scale;
                 this.y=(Math.floor(Math.random()*column-1)+1)*scale;
-                if(this.x<canvas.width && this.y<canvas.height){
+                if(this.x<=canvas.width && this.y<=canvas.height){
                     break;
                 }
             }
@@ -114,6 +141,10 @@ if(window.innerWidth>=600){
         }
         this.outBoard=function(x,y){
             if(x>canvas.width || x<0||y>canvas.height ||y<0){
+                score[j]=this.total;
+                if(this.total<10){
+                    str+="<h3>"+"0"+score[j]+"</h3><br>";
+                }else{str+="<h3>"+score[j]+"</h3><br>";}
                 this.bol=false;
                 Swal.fire({
                     title: `${this.check(this.total)}`,
@@ -145,6 +176,7 @@ if(window.innerWidth>=600){
                 musicOV.play();
                 document.querySelector(".speedsetting").style.display="block";
                 document.querySelector("button").innerText="Try again"
+                j++;
                 
             }
             
@@ -203,6 +235,9 @@ if(window.innerWidth>=600){
         
     };
     function start(){
+        HisBoard.firstElementChild.style.right="-105%";
+        HisBoard.lastElementChild.style.right="-9%";
+        HisBoard.lastElementChild.style.transform = "rotate(0)";
         clearInterval(a);
         musicBG.play();
         snake=new Snake;
@@ -219,6 +254,10 @@ if(window.innerWidth>=600){
             snake.move();
             snake.paint();
             if(snake.dead()){
+                score[j]=snack.total;
+                if(snack.total<10){
+                    str+="<h3>"+"0"+score[j]+"</h3><br>";
+                }else{str+="<h3>"+score[j]+"</h3><br>";}
                 Swal.fire({
                     title: "Opp! You eat your tail!",
                     width:500,
@@ -239,7 +278,8 @@ if(window.innerWidth>=600){
                 musicMV.play();
                 
                 document.querySelector(".speedsetting").style.display="block";
-                document.querySelector("button").innerText="Try again";  
+                document.querySelector("button").innerText="Try again";
+                j++;  
             };
             if(snake.ate(snack)){
                 musicEat.play();
@@ -248,6 +288,9 @@ if(window.innerWidth>=600){
             document.querySelector(".Score").innerText=snake.total;
         },document.querySelector("#speed").valueAsNumber);
         document.body.addEventListener("keydown",(e)=>{
+            HisBoard.firstElementChild.style.right="-105%";
+            HisBoard.lastElementChild.style.right="-9%";
+            HisBoard.lastElementChild.style.transform = "rotate(0)";
             lastKey=direct? direct:"";
             direct=e.key.replace("Arrow","");
             snake.moveDirect(direct,lastKey);
@@ -267,5 +310,27 @@ if(window.innerWidth>=600){
         window.history.go(-1);
     })
 }
+function slideHis(){
+    HisBoard.firstElementChild.style.right="-105%"
+    HisBoard.lastElementChild.style.right="-9%"
+    HisBoard.lastElementChild.addEventListener("click",()=>{
+        
+        if(HisBoard.firstElementChild.style.right=="-105%" && HisBoard.lastElementChild.style.right=="-9%"){
+            HisBoard.firstElementChild.style.right="-5%";
+            HisBoard.lastElementChild.style.right="95%";
+            HisBoard.lastElementChild.style.transform = "rotate(180deg)";
+            
+        }else{
+            HisBoard.firstElementChild.style.right="-105%";
+            HisBoard.lastElementChild.style.right="-9%";
+            HisBoard.lastElementChild.style.transform = "rotate(0)";
+        }
+        HisBoard.firstElementChild.innerHTML="<h2>Your score history</h2><br>"+str;
+        
+    });
+
+}
+slideHis()
+
 
 
