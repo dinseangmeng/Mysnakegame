@@ -2,9 +2,9 @@
 
 const canvas = document.querySelector('.canvas');
 const context=canvas.getContext('2d');
-var scale=30;
-var rows=canvas.width/scale
-var column=canvas.height/scale;
+var scale;
+const rows=30;
+const column=20;
 var snake;
 var snack;
 var lastKey,direct;
@@ -13,51 +13,33 @@ var musicMV=new Audio('music/move.mp3');
 var musicOV=new Audio('music/gameover.mp3');
 var musicEat=new Audio('music/food.mp3');
 var a
-
-if(window.innerWidth>=600 && window.innerHeight>=400){
-    function size() {
-        if(document.documentElement.clientHeight>630 && document.documentElement.clientWidth>1250 ){
-            document.querySelector("#dashboard").style.display="block";
-            canvas.width=900;
-            canvas.height=600;
-        }
-        else if((document.documentElement.clientHeight>400 &&document.documentElement.clientHeight<630) || (document.documentElement.clientWidth>=600&&document.documentElement.clientWidth<900) ){
-            document.querySelector("#dashboard").style.display="block";
-            canvas.height=390;
-            canvas.width=600;
-        }else if(document.documentElement.clientHeight<400 || document.documentElement.clientWidth<600 ){
-            document.querySelector("#dashboard").style.display="none";
-            canvas.width=document.documentElement.clientWidth*0.7;
-            canvas.height=document.documentElement.clientHeight*0.7;
-            Swal.fire({
-                title: "Your Screen too small to play !",
-                text:"This Game Just creat for Computer online",
-                icon: "error",
-                imageUrl:"https://cdn.dribbble.com/users/375867/screenshots/3136248/media/6e3aff4123c55b4df6c1c711292482fc.gif",
-                imageWidth: 250,
-                imageHeight: 200,
-                
-            }).then(()=>{
-                window.history.go(-1);
-            })
-        }
-        
-        
-        
-    };
-    window.addEventListener("resize",size);
-    function label(){
-        document.querySelector(".speedlabel").innerText=document.querySelector("#speed").value;
-    };
-    setInterval(label,50);
-    
+var speedLabel=document.getElementById("speed");
+function label(){
+    document.querySelector(".speedlabel").innerText=speedLabel.value;
+};
+setInterval(label,50);
+if(window.innerWidth>=600){
+    canvas.width=Math.floor(((document.documentElement.clientWidth)/50)*rows);
+    canvas.height=Math.floor(((document.documentElement.clientHeight)/30)*column);
+    scale=Math.floor((canvas.height+canvas.width)/50);
+    canvas.width=canvas.width+2*scale;
+    canvas.height=canvas.height+2*scale;
+    window.addEventListener("resize",()=>{
+        canvas.width=Math.floor(((document.documentElement.clientWidth)/50)*rows);
+        canvas.height=Math.floor(((document.documentElement.clientHeight)/30)*column);
+        scale=Math.floor((canvas.height+canvas.width)/50);
+        canvas.width=canvas.width+2*scale;
+        canvas.height=canvas.height+2*scale;
+    });
     function Snack(){
         this.x;
         this.y;
         
         this.foodPath=function(){
-            this.x=(Math.floor(Math.random()*rows-4)+4)*scale;
-            this.y=(Math.floor(Math.random()*column-4)+4)*scale;
+            this.x=(Math.floor(Math.random()*rows-1)+1)*scale;
+            this.y=(Math.floor(Math.random()*column-1)+1)*scale;
+            console.log(this.x,this.y);
+
         }
         this.paint=function(){
             context.fillStyle="#7CF19C";
@@ -104,7 +86,7 @@ if(window.innerWidth>=600 && window.innerHeight>=400){
                     imageUrl:"https://cdn.dribbble.com/users/375867/screenshots/3136248/media/6e3aff4123c55b4df6c1c711292482fc.gif",
                     imageWidth: 250,
                     imageHeight: 200,
-                });
+                })
                 if(this.total<10){
                     document.querySelector(".reloadp").style.display="block"
                     document.querySelector(".reloadp").innerText="Opp ! Your Score TOO low you Should Change Speed for First try";
@@ -208,7 +190,7 @@ if(window.innerWidth>=600 && window.innerHeight>=400){
                     imageUrl:"https://cdn.dribbble.com/users/375867/screenshots/3136248/media/6e3aff4123c55b4df6c1c711292482fc.gif",
                     imageWidth: 250,
                     imageHeight: 200,
-                })
+                });
                 snake.total=0;
                 snake.tail=[];
                 snake.x=0;
@@ -219,7 +201,7 @@ if(window.innerWidth>=600 && window.innerHeight>=400){
                 musicMV.play();
                 
                 document.querySelector(".speedsetting").style.display="block";
-                document.querySelector("button").innerText="Try again"
+                document.querySelector("button").innerText="Try again";
 
                 
                 
