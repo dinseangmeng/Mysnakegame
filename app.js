@@ -71,6 +71,13 @@ if(window.innerWidth>=600){
         this.foodPath=function(){
             this.x=(Math.floor(Math.random()*rows-1)+1)*scale;
             this.y=(Math.floor(Math.random()*column-1)+1)*scale;
+            while(this.x>document.documentElement.clientWidth){
+                this.x=(Math.floor(Math.random()*rows-1)+1)*scale;
+            }
+            while(this.y>document.documentElement.clientHeight){
+                this.y=(Math.floor(Math.random()*column-1)+1)*scale;
+
+            }
 
         }
         this.paint=function(){
