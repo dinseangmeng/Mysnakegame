@@ -2,9 +2,9 @@
 
 const canvas = document.querySelector('.canvas');
 const context=canvas.getContext('2d');
-var scale;
-const rows=30;
-const column=20;
+var scale=30;
+var rows
+var column
 var snake;
 var snack;
 var lastKey,direct;
@@ -16,33 +16,61 @@ var a
 var speedLabel=document.getElementById("speed");
 function label(){
     document.querySelector(".speedlabel").innerText=speedLabel.value;
+
 };
 setInterval(label,50);
 if(window.innerWidth>=600){
-    canvas.width=Math.floor(((document.documentElement.clientWidth)/50)*rows);
-    canvas.height=Math.floor(((document.documentElement.clientHeight)/25)*column);
-    scale=Math.floor((canvas.height+canvas.width)/50);
-    canvas.width=canvas.width+2*scale;
-    canvas.height=canvas.height+2*scale;
+    for(let i=Math.floor(document.documentElement.clientWidth/1.5);i>600;i--){
+        if(i%scale===0){
+            canvas.width=i;
+            break;
+        }
+    };
+    for(let i=Math.floor(document.documentElement.clientHeight*0.8);i>600;i--){
+        if(i%scale===0){
+            canvas.height=i;
+            break;
+        }
+    };
     window.addEventListener("resize",()=>{
-        canvas.width=Math.floor(((document.documentElement.clientWidth)/50)*rows);
-        canvas.height=Math.floor(((document.documentElement.clientHeight)/25)*column);
-        scale=Math.floor((canvas.height+canvas.width)/50);
-        canvas.width=canvas.width+2*scale;
-        canvas.height=canvas.height+2*scale;
+        if(window.innerWidth>=600){
+            for(let i=Math.floor(document.documentElement.clientWidth/1.5);i>600;i--){
+                if(i%scale==0){
+                    canvas.width=i;
+                    break;
+                }
+            }
+            for(let i=Math.floor(document.documentElement.clientHeight*0.8);i>600;i--){
+                if(i%scale==0){
+                    canvas.height=i;
+                    break;
+                }
+            }
+
+        }else {
+            Swal.fire({
+                title: "Your Screen too small to play !",
+                text:"This Game Just creat for Computer online",
+                icon: "error",
+                imageUrl:"https://cdn.dribbble.com/users/375867/screenshots/3136248/media/6e3aff4123c55b4df6c1c711292482fc.gif",
+                imageWidth: 250,
+                imageHeight: 200,
+                
+            }).then(()=>{
+                window.history.go(-1);
+            })
+        }
+        
     });
+    rows=canvas.width/scale;
+    column=canvas.height/scale;
     function Snack(){
         this.x;
         this.y;
         
         this.foodPath=function(){
-            this.x=(Math.floor(Math.random()*column-1)+1)*scale;
-            this.y=(Math.floor(Math.random()*rows-1)+1)*scale;
-            while(this.x>canvas.width && this.y>canvas.height){
-                this.x=(Math.floor(Math.random()*column-1)+1)*scale;
-                this.y=(Math.floor(Math.random()*rows-1)+1)*scale;
-            }
-            console.log(this.x,this.y);
+            this.x=(Math.floor(Math.random()*rows-1)+1)*scale;
+            this.y=(Math.floor(Math.random()*column-1)+1)*scale;
 
         }
         this.paint=function(){
@@ -240,4 +268,5 @@ if(window.innerWidth>=600){
         window.history.go(-1);
     })
 }
+
 
