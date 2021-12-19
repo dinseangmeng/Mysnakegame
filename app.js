@@ -20,13 +20,13 @@ function label(){
 setInterval(label,50);
 if(window.innerWidth>=600){
     canvas.width=Math.floor(((document.documentElement.clientWidth)/50)*rows);
-    canvas.height=Math.floor(((document.documentElement.clientHeight)/30)*column);
+    canvas.height=Math.floor(((document.documentElement.clientHeight)/25)*column);
     scale=Math.floor((canvas.height+canvas.width)/50);
     canvas.width=canvas.width+2*scale;
     canvas.height=canvas.height+2*scale;
     window.addEventListener("resize",()=>{
         canvas.width=Math.floor(((document.documentElement.clientWidth)/50)*rows);
-        canvas.height=Math.floor(((document.documentElement.clientHeight)/30)*column);
+        canvas.height=Math.floor(((document.documentElement.clientHeight)/25)*column);
         scale=Math.floor((canvas.height+canvas.width)/50);
         canvas.width=canvas.width+2*scale;
         canvas.height=canvas.height+2*scale;
@@ -36,8 +36,12 @@ if(window.innerWidth>=600){
         this.y;
         
         this.foodPath=function(){
-            this.x=(Math.floor(Math.random()*rows-1)+1)*scale;
-            this.y=(Math.floor(Math.random()*column-1)+1)*scale;
+            this.x=(Math.floor(Math.random()*column-1)+1)*scale;
+            this.y=(Math.floor(Math.random()*rows-1)+1)*scale;
+            while(this.x>canvas.width && this.y>canvas.height){
+                this.x=(Math.floor(Math.random()*column-1)+1)*scale;
+                this.y=(Math.floor(Math.random()*rows-1)+1)*scale;
+            }
             console.log(this.x,this.y);
 
         }
