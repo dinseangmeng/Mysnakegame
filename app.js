@@ -72,7 +72,7 @@ if(window.innerWidth>=600){
             while(true){
                 this.x=(Math.floor(Math.random()*rows-1)+1)*scale;
                 this.y=(Math.floor(Math.random()*column-1)+1)*scale;
-                if(this.x<canvas.width && this.y<canvas.height){
+                if(this.x<=canvas.width && this.y<=canvas.height){
                     break;
                 }
             }
