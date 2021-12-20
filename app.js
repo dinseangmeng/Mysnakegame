@@ -87,6 +87,7 @@ function side(){
     });
 }
 setInterval(label,150)
+
 if(window.innerWidth>=600){
     side();
     rows=canvas.width/scale;
@@ -96,14 +97,13 @@ if(window.innerWidth>=600){
         this.y;
         
         this.foodPath=function(){
-            while(true){
+            this.x=(Math.floor(Math.random()*rows-1)+1)*scale;
+            this.y=(Math.floor(Math.random()*column-1)+1)*scale;
+            while(this.x>=canvas.width || this.y>=canvas.height){
                 this.x=(Math.floor(Math.random()*rows-1)+1)*scale;
                 this.y=(Math.floor(Math.random()*column-1)+1)*scale;
-                if(this.x<=canvas.width && this.y<=canvas.height){
-                    break;
-                }
             }
-            console.log(this.x,this.y)
+            
     
         }
         this.paint=function(){
@@ -130,7 +130,7 @@ if(window.innerWidth>=600){
         this.move=function(){
             for(let i=0;i<this.tail.length-1;i++){
                 this.tail[i]=this.tail[i+1]
-                
+                this.outBoard(this.tail[i].x,this.tail[i].y);
             }
             this.tail[this.total-1]={x: this.x, y: this.y};
             this.x+=this.vSpeed;
@@ -138,9 +138,10 @@ if(window.innerWidth>=600){
             this.outBoard(this.x,this.y);
             
             
+            
         }
         this.outBoard=function(x,y){
-            if(x>canvas.width || x<0||y>canvas.height ||y<0){
+            if(x>canvas.width || x<0||y>canvas.height ||y<0 ){
                 score[j]=this.total;
                 if(this.total<10){
                     str+="<h3>"+"0"+score[j]+"</h3><br>";
@@ -288,12 +289,18 @@ if(window.innerWidth>=600){
             document.querySelector(".Score").innerText=snake.total;
         },document.querySelector("#speed").valueAsNumber);
         document.body.addEventListener("keydown",(e)=>{
-            HisBoard.firstElementChild.style.right="-105%";
-            HisBoard.lastElementChild.style.right="-9%";
-            HisBoard.lastElementChild.style.transform = "rotate(0)";
+            
             lastKey=direct? direct:"";
             direct=e.key.replace("Arrow","");
             snake.moveDirect(direct,lastKey);
+            if(direct=="Up" || direct=="Down" || direct=="Right" ||direct=="Left"){
+                HisBoard.firstElementChild.style.right="-105%";
+                HisBoard.lastElementChild.style.right="-9%";
+                HisBoard.lastElementChild.style.transform = "rotate(0)";
+                document.querySelector(".reloadp").style.display="none";
+                document.querySelector(".speedsetting").style.display="none";
+
+            }
             
         })
     };
