@@ -46,13 +46,13 @@ function Mvalue(){
 }
 function side(){
     m=0;
-    for(let i=Math.floor(document.documentElement.clientWidth/1.5);i>600;i--){
+    for(let i=Math.floor(document.documentElement.clientWidth/1.5);i>100;i--){
         if(i%scale===0){
             canvas.width=i;
             break;
         }
     };
-    for(let i=Math.floor(document.documentElement.clientHeight*0.8);i>600;i--){
+    for(let i=Math.floor(document.documentElement.clientHeight*0.8);i>100;i--){
         if(i%scale===0){
             canvas.height=i;
             break;
@@ -60,14 +60,14 @@ function side(){
     };
     window.addEventListener("resize",()=>{
         
-        if(window.innerWidth>=600){
-            for(let i=Math.floor(document.documentElement.clientWidth/1.5);i>600;i--){
+        if(window.innerWidth>=500){
+            for(let i=Math.floor(document.documentElement.clientWidth/1.5);i>100;i--){
                 if(i%scale==0){
                     canvas.width=i;
                     break;
                 }
             }
-            for(let i=Math.floor(document.documentElement.clientHeight*0.8);i>600;i--){
+            for(let i=Math.floor(document.documentElement.clientHeight*0.8);i>100;i--){
                 if(i%scale==0){
                     canvas.height=i;
                     break;
