@@ -41,6 +41,9 @@ function label(){
     
 
 };
+function Mvalue(){
+    m=0;
+}
 function side(){
     m=0;
     for(let i=Math.floor(document.documentElement.clientWidth/1.5);i>600;i--){
