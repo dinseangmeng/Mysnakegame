@@ -1,7 +1,7 @@
 //Variable
 const canvas = document.querySelector('.canvas');
 const context=canvas.getContext('2d');
-var scale=30,scale1;
+var scale=28;
 var rows
 var column
 var snake;
@@ -11,16 +11,18 @@ var musicBG=new Audio('music/music.mp3');
 var musicMV=new Audio('music/move.mp3');
 var musicOV=new Audio('music/gameover.mp3');
 var musicEat=new Audio('music/food.mp3');
-var a,Speed,j=0;
+var a,Speed=0,j=0,m=0;
 var score=new Array;
 var speedLabel=document.getElementById("speed");
 var HisBoard=document.querySelector("#Scorehistory");
 var str=new String;
 function label(){
-    if(document.querySelector("#scale").valueAsNumber%2!=0){
-        document.querySelector("#scale").value=document.querySelector("#scale").valueAsNumber-1;
-        scale1=document.querySelector("#scale").valueAsNumber;
-        
+    if(!primary(document.querySelector("#scale").valueAsNumber)){
+        scale=document.querySelector("#scale").valueAsNumber;
+        document.querySelector(".scaleLabel").innerText=scale;
+
+    }else{
+        document.querySelector(".scaleLabel").value=scale;
     }
     if(speedLabel.valueAsNumber%5!=0){
         Speed=speedLabel.valueAsNumber;
@@ -34,14 +36,13 @@ function label(){
         speedLabel.value=Speed;
         speedLabel.valueAsNumber=Speed;
     }
-    document.querySelector(".scaleLabel").innerText=scale ? scale:"Scale";
-    if(scale1!==scale){
-        scale=scale1;
-    }
+
+    
     
 
 };
 function side(){
+    m=0;
     for(let i=Math.floor(document.documentElement.clientWidth/1.5);i>600;i--){
         if(i%scale===0){
             canvas.width=i;
@@ -84,9 +85,10 @@ function side(){
         }
         
         
+        
     });
 }
-setInterval(label,150)
+setInterval(label,150);
 
 if(window.innerWidth>=600){
     side();
@@ -236,6 +238,7 @@ if(window.innerWidth>=600){
         
     };
     function start(){
+        m++;
         HisBoard.firstElementChild.style.right="-105%";
         HisBoard.lastElementChild.style.right="-9%";
         HisBoard.lastElementChild.style.transform = "rotate(0)";
@@ -277,19 +280,19 @@ if(window.innerWidth>=600){
                 snake.hSpeed=0;
                 snake.bol=false;
                 musicMV.play();
-                
                 document.querySelector(".speedsetting").style.display="block";
                 document.querySelector("button").innerText="Try again";
-                j++;  
+                j++; 
+                 
             };
             if(snake.ate(snack)){
                 musicEat.play();
                 snack.foodPath();
             };
+            
             document.querySelector(".Score").innerText=snake.total;
         },document.querySelector("#speed").valueAsNumber);
         document.body.addEventListener("keydown",(e)=>{
-            
             lastKey=direct? direct:"";
             direct=e.key.replace("Arrow","");
             snake.moveDirect(direct,lastKey);
@@ -299,6 +302,11 @@ if(window.innerWidth>=600){
                 HisBoard.lastElementChild.style.transform = "rotate(0)";
                 document.querySelector(".reloadp").style.display="none";
                 document.querySelector(".speedsetting").style.display="none";
+                if(m==0){
+                    start();
+                }
+                m++;
+                
 
             }
             
@@ -337,7 +345,7 @@ function slideHis(){
     });
 
 }
-slideHis()
+slideHis();
 
 
 
