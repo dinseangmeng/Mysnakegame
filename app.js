@@ -135,7 +135,6 @@ if(window.innerWidth>=600){
         this.move=function(){
             for(let i=0;i<this.tail.length-1;i++){
                 this.tail[i]=this.tail[i+1]
-                this.outBoard(this.tail[i].x,this.tail[i].y);
             }
             this.tail[this.total-1]={x: this.x, y: this.y};
             this.x+=this.vSpeed;
@@ -147,7 +146,7 @@ if(window.innerWidth>=600){
         }
         this.outBoard=function(x,y){
             if(document.querySelector("#modeBorder").checked){
-                if(x>canvas.width || x<0||y>canvas.height ||y<0 ){
+                if(x>=canvas.width || x<0||y>=canvas.height ||y<0 ){
                     score[j]=this.total;
                     if(this.total<10){
                         str+="<h3>"+"0"+score[j]+"</h3><br>";
@@ -189,12 +188,12 @@ if(window.innerWidth>=600){
                     
                 }
             }else if(document.querySelector("#modeNBorder").checked){
-                if(x>canvas.width ){
+                if(x>=canvas.width ){
                     this.x=0;
                     
                 }else if(x<0){
                     this.x=canvas.width;
-                }else if(y>canvas.height){
+                }else if(y>=canvas.height){
                     this.y=0;
                 }else if(y<0){
                     this.y=canvas.height;
@@ -243,9 +242,10 @@ if(window.innerWidth>=600){
             return false;
         }
         this.dead=function(){
-            for(let i=0;i<this.tail.length-1;i++){
-                this.outBoard(this.tail[i].x,this.tail[i].y);
-                if(this.x===this.tail[i].x && this.y==this.tail[i].y){
+            for(let i=0;i<(this.tail.length)-1;i++){
+                if(this.x==this.tail[i].x && this.y==this.tail[i].y){
+                    console.log(this.x,this.tail[i].x,i)
+                    console.log(this.y,this.tail[i].y,i)
                     return true;
                 }
                 
