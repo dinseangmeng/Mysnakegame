@@ -46,13 +46,13 @@ function Mvalue(){
 }
 function side(){
     m=0;
-    for(let i=Math.floor(document.documentElement.clientWidth/1.5);i>100;i--){
+    for(let i=Math.floor(document.documentElement.clientWidth/1.5);i>600;i--){
         if(i%scale===0){
             canvas.width=i;
             break;
         }
     };
-    for(let i=Math.floor(document.documentElement.clientHeight*0.8);i>100;i--){
+    for(let i=Math.floor(document.documentElement.clientHeight*0.8);i>=600;i--){
         if(i%scale===0){
             canvas.height=i;
             break;
@@ -146,44 +146,59 @@ if(window.innerWidth>=600){
             
         }
         this.outBoard=function(x,y){
-            if(x>canvas.width || x<0||y>canvas.height ||y<0 ){
-                score[j]=this.total;
-                if(this.total<10){
-                    str+="<h3>"+"0"+score[j]+"</h3><br>";
-                }else{str+="<h3>"+score[j]+"</h3><br>";}
-                this.bol=false;
-                Swal.fire({
-                    title: `${this.check(this.total)}`,
-                    width:600,
-                    padding:"1rem",
-                    text:`Your score ${this.total}`,
-                    icon: "error" ,
-                    imageUrl:"https://cdn.dribbble.com/users/375867/screenshots/3136248/media/6e3aff4123c55b4df6c1c711292482fc.gif",
-                    imageWidth: 250,
-                    imageHeight: 200,
-                })
-                if(this.total<10){
-                    document.querySelector(".reloadp").style.display="block"
-                    document.querySelector(".reloadp").innerText="Opp ! Your Score TOO low you Should Change Speed for First try";
-                }else if(this.total>20){
-                    document.querySelector(".reloadp").style.display="block"
-                    document.querySelector(".reloadp").innerText="Wow ! Your try more hard speed";
+            if(document.querySelector("#modeBorder").checked){
+                if(x>canvas.width || x<0||y>canvas.height ||y<0 ){
+                    score[j]=this.total;
+                    if(this.total<10){
+                        str+="<h3>"+"0"+score[j]+"</h3><br>";
+                    }else{str+="<h3>"+score[j]+"</h3><br>";}
+                    this.bol=false;
+                    Swal.fire({
+                        title: `${this.check(this.total)}`,
+                        width:600,
+                        padding:"1rem",
+                        text:`Your score ${this.total}`,
+                        icon: "error" ,
+                        imageUrl:"https://cdn.dribbble.com/users/375867/screenshots/3136248/media/6e3aff4123c55b4df6c1c711292482fc.gif",
+                        imageWidth: 250,
+                        imageHeight: 200,
+                    })
+                    if(this.total<10){
+                        document.querySelector(".reloadp").style.display="block"
+                        document.querySelector(".reloadp").innerText="Opp ! Your Score TOO low you Should Change Speed for First try";
+                    }else if(this.total>20){
+                        document.querySelector(".reloadp").style.display="block"
+                        document.querySelector(".reloadp").innerText="Wow ! Your try more hard speed";
+                    }
+                    else{
+                        document.querySelector(".reloadp").style.display="block"
+                        document.querySelector(".reloadp").innerText="Not Bad! on first try";
+                    }
+                    this.total=0;
+                    this.tail=[];
+                    this.x=0;
+                    this.y=0;
+                    this.vSpeed=0;
+                    this.hSpeed=0;
+                    direct="";
+                    lastKey="";
+                    musicOV.play();
+                    document.querySelector(".speedsetting").style.display="block";
+                    document.querySelector("button").innerText="Try again"
+                    j++;
+                    
                 }
-                else{
-                    document.querySelector(".reloadp").style.display="block"
-                    document.querySelector(".reloadp").innerText="Not Bad! on first try";
+            }else if(document.querySelector("#modeNBorder").checked){
+                if(x>canvas.width ){
+                    this.x=0;
+                    
+                }else if(x<0){
+                    this.x=canvas.width;
+                }else if(y>canvas.height){
+                    this.y=0;
+                }else if(y<0){
+                    this.y=canvas.height;
                 }
-                this.total=0;
-                this.tail=[];
-                this.x=0;
-                this.y=0;
-                this.vSpeed=0;
-                this.hSpeed=0;
-                musicOV.play();
-                document.querySelector(".speedsetting").style.display="block";
-                document.querySelector("button").innerText="Try again"
-                j++;
-                
             }
             
         }
@@ -279,6 +294,8 @@ if(window.innerWidth>=600){
                 snake.tail=[];
                 snake.x=0;
                 snake.y=0;
+                direct="";
+                lastKey="";
                 snake.vSpeed=0;
                 snake.hSpeed=0;
                 snake.bol=false;
