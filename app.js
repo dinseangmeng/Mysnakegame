@@ -2,17 +2,14 @@
 const canvas = document.querySelector('.canvas');
 const context=canvas.getContext('2d');
 var scale=28;
-var rows
-var column
-var snake;
-var snack;
-var lastKey,direct;
+var snake,snack,lastKey,direct,column,rows,struggle;
 var musicBG=new Audio('music/music.mp3');
 var musicMV=new Audio('music/move.mp3');
 var musicOV=new Audio('music/gameover.mp3');
 var musicEat=new Audio('music/food.mp3');
-var a,Speed=0,j=0,m=0;
+var a,Speed=0,j=0,m=0,ran;
 var score=new Array;
+var hardMode=document.querySelector("#hardMode");
 var speedLabel=document.getElementById("speed");
 var HisBoard=document.querySelector("#Scorehistory");
 var str=new String;
@@ -35,6 +32,19 @@ function label(){
         document.querySelector(".speedlabel").innerText=Speed;
         speedLabel.value=Speed;
         speedLabel.valueAsNumber=Speed;
+    }
+    if(document.querySelector("#hardMode").checked){
+        document.querySelector("#modeBorder").checked=true;
+        for(let i=0;i<document.querySelectorAll(".modeNborder").length;i++){
+            document.querySelectorAll(".modeNborder")[i].style.display="none";
+
+        }
+    }else{
+        
+        for(let i=0;i<document.querySelectorAll(".modeNborder").length;i++){
+            document.querySelectorAll(".modeNborder")[i].style.display="";
+
+        }
     }
 
     
@@ -116,6 +126,48 @@ if(window.innerWidth>=600){
             context.fillRect(this.x,this.y,scale,scale);   
         }
     };
+    function Struggle (){
+        this.x;
+        this.y;
+        this.len;
+        this.ran=Math.floor(Math.random()*5+5)
+        this.locatedX=[];
+        this.locatedY=[];
+        this.capacity=[];
+        this.RandomStruggle=function (x,y){
+            for(let i=0;i<=this.ran;i++){
+                this.x=(Math.floor(Math.random()*rows-1)+1)*scale;
+                this.y=(Math.floor(Math.random()*column-1)+1)*scale;
+                this.len=Math.floor(Math.random()*4+3);
+                while(this.x>=canvas.width || this.y>=canvas.height || this.x==0 || this.y==0 || (this.x==x && this.y==y)){
+                    this.x=(Math.floor(Math.random()*rows-1)+1)*scale;
+                    this.y=(Math.floor(Math.random()*column-1)+1)*scale;
+                }
+                this.locatedX.push(this.x);
+                this.locatedY.push(this.y);
+                this.capacity.push(this.len);
+            }
+        }
+        this.showStruggle=function (){
+            context.fillStyle="#000000";
+            for(let i=0;i<this.locatedX.length;i++){
+                context.fillRect(this.locatedX[i],this.locatedY[i],this.capacity[i]*scale,scale);
+
+            }
+        }
+        this.hit=function (x,y){
+            for(let i=0;i<=this.locatedX.length-1;i++){
+                for(let k=0;k<this.capacity[i];k++){
+                    if(x==(this.locatedX[i]+(k*scale)) && y==(this.locatedY[i])){
+                        return true;
+                    }
+                    
+                }
+                
+            }
+            return false;
+        }
+    }
     function Snake(){
         this.x=0;
         this.y=0;
@@ -244,8 +296,6 @@ if(window.innerWidth>=600){
         this.dead=function(){
             for(let i=0;i<(this.tail.length)-1;i++){
                 if(this.x==this.tail[i].x && this.y==this.tail[i].y){
-                    console.log(this.x,this.tail[i].x,i)
-                    console.log(this.y,this.tail[i].y,i)
                     return true;
                 }
                 
@@ -255,6 +305,7 @@ if(window.innerWidth>=600){
         this.bol=true;
         
     };
+
     function start(){
         m++;
         HisBoard.firstElementChild.style.right="-105%";
@@ -264,19 +315,55 @@ if(window.innerWidth>=600){
         musicBG.play();
         snake=new Snake;
         snack=new Snack;
+        struggle=new Struggle;
         snack.foodPath();
-        
+        struggle.RandomStruggle(snack.x,snack.y);
         document.querySelector(".reloadp").style.display="none";
         document.querySelector(".speedsetting").style.display="none";
         
         
         a=setInterval(()=>{
             context.clearRect(0, 0, canvas.width, canvas.height);
+            if(hardMode.checked){
+                struggle.showStruggle();
+                if(struggle.hit(snake.x,snake.y)){
+                    score[j]=snake.total;
+                    if(snack.total<10){
+                        str+="<h3>"+"0"+score[j]+"</h3><br>";
+                    }else{str+="<h3>"+score[j]+"</h3><br>";}
+                    Swal.fire({
+                        title: "Opp! You eat your tail!",
+                        width:500,
+                        padding:"1rem",
+                        text:`Your score ${snake.total}`,
+                        icon: "error",
+                        imageUrl:"https://cdn.dribbble.com/users/375867/screenshots/3136248/media/6e3aff4123c55b4df6c1c711292482fc.gif",
+                        imageWidth: 250,
+                        imageHeight: 200,
+                    });
+                    snake.total=0;
+                    snake.tail=[];
+                    snake.x=0;
+                    snake.y=0;
+                    direct="";
+                    lastKey="";
+                    snake.vSpeed=0;
+                    snake.hSpeed=0;
+                    snake.bol=false;
+                    musicMV.play();
+                    document.querySelector(".speedsetting").style.display="block";
+                    document.querySelector("button").innerText="Try again";
+                    j++; 
+                }
+                
+            }
+
             snack.paint();
             snake.move();
             snake.paint();
+            
             if(snake.dead()){
-                score[j]=snack.total;
+                score[j]=snake.total;
                 if(snack.total<10){
                     str+="<h3>"+"0"+score[j]+"</h3><br>";
                 }else{str+="<h3>"+score[j]+"</h3><br>";}
