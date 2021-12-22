@@ -1,7 +1,7 @@
 //Variable
 const canvas = document.querySelector('.canvas');
 const context=canvas.getContext('2d');
-var scale=28;
+var scale=30;
 var snake,snack,lastKey,direct,column,rows,struggle;
 var musicBG=new Audio('music/music.mp3');
 var musicMV=new Audio('music/move.mp3');
