@@ -7,50 +7,63 @@ var musicBG=new Audio('music/music.mp3');
 var musicMV=new Audio('music/move.mp3');
 var musicOV=new Audio('music/gameover.mp3');
 var musicEat=new Audio('music/food.mp3');
-var a,Speed=0,j=0,m=0,ran;
+var a,j=0,m=0,ran;
 var score=new Array;
+var normalMode=document.querySelector("#NormalMode");
+var mediumMode=document.querySelector("#MediumMode");
 var hardMode=document.querySelector("#hardMode");
+var extremMode=document.querySelector("#extremMode");
+var border=document.querySelector("#modeBorder");
+var Noborder=document.querySelectorAll("#modeNBorder");
 var speedLabel=document.getElementById("speed");
 var HisBoard=document.querySelector("#Scorehistory");
+var detailChoice;
 var str=new String;
 function label(){
-    if(!primary(document.querySelector("#scale").valueAsNumber)){
-        scale=document.querySelector("#scale").valueAsNumber;
-        document.querySelector(".scaleLabel").innerText=scale;
-
-    }else{
-        document.querySelector(".scaleLabel").value=scale;
-    }
-    if(speedLabel.valueAsNumber%5!=0){
-        Speed=speedLabel.valueAsNumber;
-        while(true){
-            if(Speed%5==0){
-                break
-            }
-            Speed++;
+    document.querySelector(".scaleLabel").innerText=document.querySelector("#scale").value
+    scale=document.querySelector("#scale").valueAsNumber;
+    document.querySelector(".speedlabel").innerText=speedLabel.value;
+        if(extremMode.checked){
+            border.checked=true;
+        }if(hardMode.checked){
+            Noborder[0].checked=true;
+        }if(normalMode.checked){
+            Noborder[0].checked=true;
+        }if(mediumMode.checked){
+            border.checked=true
         }
-        document.querySelector(".speedlabel").innerText=Speed;
-        speedLabel.value=Speed;
-        speedLabel.valueAsNumber=Speed;
+
     }
-    if(document.querySelector("#hardMode").checked){
-        document.querySelector("#modeBorder").checked=true;
-        for(let i=0;i<document.querySelectorAll(".modeNborder").length;i++){
-            document.querySelectorAll(".modeNborder")[i].style.display="none";
-
-        }
-    }else{
-        
-        for(let i=0;i<document.querySelectorAll(".modeNborder").length;i++){
-            document.querySelectorAll(".modeNborder")[i].style.display="";
-
-        }
-    }
-
-    
-    
-
-};
+function Detail(){
+    extremMode.addEventListener("change",()=>{
+        detailChoice="Hit the black one and out of board death";
+        AlertDetail(detailChoice)
+    })
+    hardMode.addEventListener("change",()=>{
+        detailChoice="Hit the black one death and out of board freely";
+        AlertDetail(detailChoice)
+    })
+    normalMode.addEventListener("change",()=>{
+        detailChoice="Move freely";
+        AlertDetail(detailChoice)})
+    mediumMode.addEventListener("change",()=>{
+        detailChoice="out of board death";
+        AlertDetail(detailChoice)
+    })
+}
+Detail();
+function AlertDetail(detail){
+    Swal.fire({
+        toast: true,
+        position: 'top-end',
+        timerProgressBar: true,
+        icon: 'info',
+        title: `${detail}`,
+        showConfirmButton: false,
+        timer: 3000
+    })
+    Mvalue();
+}
 function Mvalue(){
     m=0;
 }
@@ -199,6 +212,7 @@ if(window.innerWidth>=600){
         this.outBoard=function(x,y){
             if(document.querySelector("#modeBorder").checked){
                 if(x>=canvas.width || x<0||y>=canvas.height ||y<0 ){
+                    HisBoard.style.display="";
                     score[j]=this.total;
                     if(this.total<10){
                         str+="<h3>"+"0"+score[j]+"</h3><br>";
@@ -307,6 +321,7 @@ if(window.innerWidth>=600){
     };
 
     function start(){
+        HisBoard.style.display="none";
         m++;
         HisBoard.firstElementChild.style.right="-105%";
         HisBoard.lastElementChild.style.right="-9%";
@@ -324,15 +339,24 @@ if(window.innerWidth>=600){
         
         a=setInterval(()=>{
             context.clearRect(0, 0, canvas.width, canvas.height);
-            if(hardMode.checked){
+            if(hardMode.checked || extremMode.checked){
                 struggle.showStruggle();
+                for(let i=0;i<=struggle.locatedX.length-1;i++){
+                    for(let k=0;k<struggle.capacity[i];k++){
+                        if(snack.x==(struggle.locatedX[i]+(k*scale)) && snack.y==(struggle.locatedY[i])){
+                            snack.foodPath();
+                        }
+                        
+                    }
+                }
                 if(struggle.hit(snake.x,snake.y)){
+                    HisBoard.style.display="";
                     score[j]=snake.total;
                     if(snack.total<10){
                         str+="<h3>"+"0"+score[j]+"</h3><br>";
                     }else{str+="<h3>"+score[j]+"</h3><br>";}
                     Swal.fire({
-                        title: "Opp! You eat your tail!",
+                        title: "Opp! Hit the wall!",
                         width:500,
                         padding:"1rem",
                         text:`Your score ${snake.total}`,
@@ -350,7 +374,7 @@ if(window.innerWidth>=600){
                     snake.vSpeed=0;
                     snake.hSpeed=0;
                     snake.bol=false;
-                    musicMV.play();
+                    musicOV.play();
                     document.querySelector(".speedsetting").style.display="block";
                     document.querySelector("button").innerText="Try again";
                     j++; 
@@ -363,6 +387,7 @@ if(window.innerWidth>=600){
             snake.paint();
             
             if(snake.dead()){
+                HisBoard.style.display="";
                 score[j]=snake.total;
                 if(snack.total<10){
                     str+="<h3>"+"0"+score[j]+"</h3><br>";
@@ -386,7 +411,7 @@ if(window.innerWidth>=600){
                 snake.vSpeed=0;
                 snake.hSpeed=0;
                 snake.bol=false;
-                musicMV.play();
+                musicOV.play();
                 document.querySelector(".speedsetting").style.display="block";
                 document.querySelector("button").innerText="Try again";
                 j++; 
@@ -411,6 +436,8 @@ if(window.innerWidth>=600){
                 document.querySelector(".speedsetting").style.display="none";
                 if(m==0){
                     start();
+                    direct="";
+                    lastKey="";
                 }
                 m++;
                 

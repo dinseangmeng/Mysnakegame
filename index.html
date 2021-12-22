@@ -20,22 +20,33 @@
         <h1 class="Score">0</h1>
         <div class="speedsetting">
             
-            <input type="range"id="speed"name="speed" min=25 max=300 title="speed" onchange="Mvalue()" ><label for="speed" class="speedlabel">speed</label>
-            <input type="range"id="scale"name="scale" min=6 max=50 title="scale" onchange="side()"><label for="speed" class="scaleLabel">Scale</label>
+            <input type="range"id="speed"name="speed" min=25 max=300 title="speed" step="5" onchange="Mvalue()" ><label for="speed" class="speedlabel">speed</label>
+            <input type="range"id="scale"name="scale" min=6 max=50 title="scale" step="2" onchange="side()"><label for="scale" class="scaleLabel">Scale</label>
             <div style="display:flex; justify-content:center;align-items: center; flex-direction: column;">
                 
                 <button clas="button" onclick="start()" class="btn btn-primary">start</button>
                 
             </div>
-            <input type="radio" id="modeBorder" name="mode" checked ><label for="modeBorder" >Border</label>
-            <input type="radio" id="modeNBorder" name="mode" class="modeNborder" ><label for="modeNBorder" class="modeNborder">No Border</label>
-            <input type="checkbox" id="hardMode" name="mode"><label for="hardMode">Hard mode</label>
+            <input type="radio" id="modeBorder" class="modeb"  name="mode" ><label class="modeb" class="modeb" >Border</label>
+            <input type="radio" id="modeNBorder" name="mode" class="modeb" ><label for="modeNBorder" class="modeb">No Border</label>
+            <div class="Dblock">
+                <input type="radio" id="NormalMode" name="mode1" checked><label for="NormalMode">Normal mode</label>
+            </div>
+            <div class="Dblock">
+                <input type="radio" id="MediumMode" name="mode1" ><label for="MediumMode">Medium mode</label>
+            </div>
+            <div class="Dblock">
+                <input type="radio" id="hardMode" name="mode1" ><label for="hardMode">Hard mode</label>
+            </div>
+            <div class="Dblock">
+                <input type="radio" id="extremMode" name="mode1" ><label for="extremMode">Extremly mode</label>
+            </div>
         </div>
-        <p class="reloadp" style="font-size:small; margin-top: 2rem;"></a></p>
         <div id="Scorehistory">
             <div></div>
             <div></div>
         </div>
+        <p class="reloadp" style="font-size:small; margin-top: 2rem;"></a></p>
     </div>
  
 </div>
