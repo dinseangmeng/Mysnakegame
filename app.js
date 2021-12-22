@@ -143,7 +143,13 @@ if(window.innerWidth>=600){
         this.x;
         this.y;
         this.len;
-        this.ran=Math.floor(Math.random()*5+5)
+        if(scale>10 && scale<=20){
+            this.ran=Math.floor(Math.random()*10+20)
+        }else if(scale>20 && scale<=30){
+            this.ran=Math.floor(Math.random()*5+10)
+        }else{
+            this.ran=Math.floor(Math.random()*5+5)
+        }
         this.locatedX=[];
         this.locatedY=[];
         this.capacity=[];
@@ -151,7 +157,12 @@ if(window.innerWidth>=600){
             for(let i=0;i<=this.ran;i++){
                 this.x=(Math.floor(Math.random()*rows-1)+1)*scale;
                 this.y=(Math.floor(Math.random()*column-1)+1)*scale;
-                this.len=Math.floor(Math.random()*4+3);
+                 if(scale>10 && scale<25){
+                    this.len=Math.floor(Math.random()*5+10);
+                }else{
+                    this.len=Math.floor(Math.random()*5+2);
+                }
+                
                 while(this.x>=canvas.width || this.y>=canvas.height || this.x==0 || this.y==0 || (this.x==x && this.y==y)){
                     this.x=(Math.floor(Math.random()*rows-1)+1)*scale;
                     this.y=(Math.floor(Math.random()*column-1)+1)*scale;
