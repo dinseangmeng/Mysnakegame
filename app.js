@@ -1,7 +1,7 @@
 //Variable
 const canvas = document.querySelector('.canvas');
 const context=canvas.getContext('2d');
-var scale=28;
+var scale=30;
 var snake,snack,lastKey,direct,column,rows,struggle;
 var musicBG=new Audio('music/music.mp3');
 var musicMV=new Audio('music/move.mp3');
@@ -145,7 +145,7 @@ if(window.innerWidth>=600){
         this.len;
         if(scale>10 && scale<=20){
             this.ran=Math.floor(Math.random()*10+20)
-        }else if(scale>20 && scale<=30){
+        }else if(scale>20 && scale<=40){
             this.ran=Math.floor(Math.random()*5+10)
         }else{
             this.ran=Math.floor(Math.random()*5+5)
@@ -153,7 +153,7 @@ if(window.innerWidth>=600){
         this.locatedX=[];
         this.locatedY=[];
         this.capacity=[];
-        this.RandomStruggle=function (x,y){
+        this.RandomStruggle=function (){
             for(let i=0;i<=this.ran;i++){
                 this.x=(Math.floor(Math.random()*rows-1)+1)*scale;
                 this.y=(Math.floor(Math.random()*column-1)+1)*scale;
@@ -162,8 +162,7 @@ if(window.innerWidth>=600){
                 }else{
                     this.len=Math.floor(Math.random()*5+2);
                 }
-                
-                while(this.x>=canvas.width || this.y>=canvas.height || this.x==0 || this.y==0 || (this.x==x && this.y==y)){
+                while((this.x>=canvas.width && this.x==0)|| (this.y>=canvas.height  && this.y==0) ){
                     this.x=(Math.floor(Math.random()*rows-1)+1)*scale;
                     this.y=(Math.floor(Math.random()*column-1)+1)*scale;
                 }
@@ -329,6 +328,7 @@ if(window.innerWidth>=600){
         }
         this.bol=true;
         
+        
     };
 
     function start(){
@@ -343,7 +343,7 @@ if(window.innerWidth>=600){
         snack=new Snack;
         struggle=new Struggle;
         snack.foodPath();
-        struggle.RandomStruggle(snack.x,snack.y);
+        struggle.RandomStruggle();
         document.querySelector(".reloadp").style.display="none";
         document.querySelector(".speedsetting").style.display="none";
         
@@ -355,6 +355,9 @@ if(window.innerWidth>=600){
                 for(let i=0;i<=struggle.locatedX.length-1;i++){
                     for(let k=0;k<struggle.capacity[i];k++){
                         if(snack.x==(struggle.locatedX[i]+(k*scale)) && snack.y==(struggle.locatedY[i])){
+                            snack.foodPath();
+                        }
+                        else if(snack.x==(struggle.locatedX[i]+(k*scale)) && snack.y==(struggle.locatedY[i])){
                             snack.foodPath();
                         }
                         
@@ -392,7 +395,13 @@ if(window.innerWidth>=600){
                 }
                 
             }
+            for(let i=0;i<snake.tail.length;i++){
+                if(snack.x==snake.tail[i].x && snack.y==snake.tail[i].y){
+                    snack.foodPath();
+                    break;
 
+                }
+            }
             snack.paint();
             snake.move();
             snake.paint();

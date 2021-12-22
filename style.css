@@ -35,9 +35,9 @@ body{
 .modeb{
     display: none;
 }
-.Dblock{
+/* .Dblock{
     display: block;
-}
+} */
 #Scorehistory div:first-child h3{
     margin: 0;
     padding:0 ;
