@@ -67,63 +67,50 @@ function AlertDetail(detail){
 function Mvalue(){
     m=0;
 }
+window.addEventListener("resize",()=>{
+        side()
+});
 function side(){
     m=0;
-    for(let i=Math.floor(document.documentElement.clientWidth/1.5);i>600;i--){
-        if(i%scale===0){
-            canvas.width=i;
-            break;
-        }
-    };
-    for(let i=Math.floor(document.documentElement.clientHeight*0.8);i>=600;i--){
-        if(i%scale===0){
-            canvas.height=i;
-            break;
-        }
-    };
-    window.addEventListener("resize",()=>{
-        
-        if(window.innerWidth>=500){
-            for(let i=Math.floor(document.documentElement.clientWidth/1.5);i>100;i--){
-                if(i%scale==0){
-                    canvas.width=i;
-                    break;
-                }
+    if(document.documentElement.clientWidth>500){
+        for(let i=Math.floor(document.documentElement.clientWidth/1.5);i>500;i--){
+            if(i%scale===0){
+                canvas.width=i;
+                break;
             }
-            for(let i=Math.floor(document.documentElement.clientHeight*0.8);i>100;i--){
-                if(i%scale==0){
-                    canvas.height=i;
-                    break;
-                }
+        };
+        for(let i=Math.floor(document.documentElement.clientHeight*0.8);i>100;i--){
+            if(i%scale===0){
+                canvas.height=i;
+                break;
             }
-        }else {
-            Swal.fire({
-                title: "Your Screen too small to play !",
-                text:"This Game Just creat for Computer online",
-                icon: "error",
-                imageUrl:"https://cdn.dribbble.com/users/375867/screenshots/3136248/media/6e3aff4123c55b4df6c1c711292482fc.gif",
-                imageWidth: 250,
-                imageHeight: 200,
-                
-            }).then(()=>{
-                window.history.go(-1);
-            })
-        }
-        
-        
-        
-    });
+        };
+
+    }else{
+        Swal.fire({
+            title: "Your Screen too small to play !",
+            text:"This Game Just creat for Computer online",
+            icon: "error",
+            imageUrl:"https://cdn.dribbble.com/users/375867/screenshots/3136248/media/6e3aff4123c55b4df6c1c711292482fc.gif",
+            imageWidth: 250,
+            imageHeight: 200,
+            
+        }).then(()=>{
+            window.history.go(-1);
+        })
+    }
 }
+    
+
 setInterval(label,150);
 
-if(window.innerWidth>=600){
+if(window.innerWidth>=500){
     side();
     rows=canvas.width/scale;
     column=canvas.height/scale;
     function Snack(){
         this.x;
         this.y;
-        
         this.foodPath=function(){
             this.x=(Math.floor(Math.random()*rows-1)+1)*scale;
             this.y=(Math.floor(Math.random()*column-1)+1)*scale;
@@ -500,6 +487,5 @@ function slideHis(){
 
 }
 slideHis();
-
 
 
